@@ -1,0 +1,22 @@
+name: "model_onnx"
+platform: "onnxruntime_onnx"
+max_batch_size: 8
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    dims: [3, 64, 64]
+  }
+]
+output [
+  {
+    name: "output"
+    data_type: TYPE_FP32
+    dims: [5]
+  }
+]
+instance_group [
+  {
+    kind: KIND_CPU
+  }
+]
