@@ -1,4 +1,4 @@
-name: "model_pth"
+name: "model_optim_pt"
 platform: "pytorch_libtorch"
 max_batch_size: 8
 input [
