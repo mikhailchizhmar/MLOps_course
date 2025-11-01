@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  data_preprocessor:
+    build: ./data_preprocessor
+    container_name: data_preprocessor
+    ports:
+      - "8050:8000"
+    restart: unless-stopped
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:24.08-py3
+    container_name: triton
+    command: >
+      tritonserver
+      --model-repository=/models
+      --backend-config=onnxruntime,device=CPU
+      --backend-config=pytorch,device=CPU
+    volumes:
+      - ./model_repository:/models
+    ports:
+      - "8000:8000"  # gRPC
+      - "8001:8001"  # gRPC client
+      - "8002:8002"  # HTTP
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
