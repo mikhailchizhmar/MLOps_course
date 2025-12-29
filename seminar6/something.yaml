@@ -1,0 +1,16 @@
+services:
+  preprocess:
+    build: ./preprocess
+    volumes:
+      - shared_data:/data
+  model:
+    build: ./model
+    volumes:
+      - shared_data:/data
+volumes:
+  shared_data:
+
+
+# ports:
+#   - "127.0.0.1:9000:9000"
+# Что это???
